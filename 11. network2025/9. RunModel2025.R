@@ -120,7 +120,7 @@ print(start <- Sys.time())
     out <- trajectory(result)
     print(Sys.time())
     save.image("modout2025.RData")
-    #save.image("networkcheck.RData")
+
 #     
 # Sh <- 
 #   out %>%  

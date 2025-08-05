@@ -16,7 +16,6 @@ KRange = c(50000, 500000)
 biteRateRange = c(0.02, 0.68)
 pupsMortRange = c(0.001,1)
 firstBiteDelayRange = c(0.14, 0.5)
-#developmentRange = c(0.1, round((1/1.5),3))
 
 # put into vectors of min and max
 min <- c(muRange[1]
@@ -28,7 +27,6 @@ min <- c(muRange[1]
          ,biteRateRange[1]
          ,pupsMortRange[1]
          ,firstBiteDelayRange[1]
-#         ,developmentRange[1]
          )
 
 max <- c(muRange[2]
@@ -40,7 +38,6 @@ max <- c(muRange[2]
          ,biteRateRange[2]
          ,pupsMortRange[2]
          ,firstBiteDelayRange[2]
-#         ,developmentRange[2]
          )
 
 # make a dataframe with ranges and names
@@ -54,7 +51,6 @@ params <- c(
   ,"biteRate"
   ,"pupsMort"
   ,"firstBiteDelay"
-#  ,"development"
 )
 
 params <- cbind.data.frame(params,min,max)
@@ -146,7 +142,7 @@ N.mat[substr(rownames(N.mat), 1, 2) == "Rh", ] <- 0
 (start <- Sys.time())
 #### Run model ####
 x = 1
-#networkSA2025 <- pbmcapply::pbmclapply(parmVals$run, function(x){
+networkSA2025 <- pbmcapply::pbmclapply(parmVals$run, function(x){
 #networkSA2025 <- mclapply(parmVals$run, function(x...){
   VBDmod <- mparse(transitions = mod.input$transitions,
                    , compartments = as.character(mod.input$compartments)
@@ -168,7 +164,7 @@ x = 1
                      ,coupling = coupling
                    )
                    ,u0 = mod.input$u0
-                   ,tspan = c(1, n.days*5:n.days)
+                   ,tspan = 1:n.days
                    ,events = as.data.frame(input.list[1])
                    ,E = mod.input$Ev
                    ,N = N.mat
@@ -177,17 +173,16 @@ x = 1
   
   result <- run(model = VBDmod)
   traj <- trajectory(result)
-  save.image("SAnetwork2025.RData")
-  #out <- 
-  #  out %>%
-  #  filter(time > 365*5)
-  #out
+  out <- 
+    out %>%
+    filter(time > 365*5)
+  out
   
-#  }  , mc.cores = detectCores()/2
-#) 
-#(end <- Sys.time())
-#start-end
-
+  }  , mc.cores = detectCores()/2
+) 
+(end <- Sys.time())
+start-end
+save.image("SAnetwork2025.RData")
 
 
 #### # extract the total cumulative incidence across all wards (except markets) ####
