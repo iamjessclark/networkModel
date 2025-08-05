@@ -1,0 +1,92 @@
+
+# movement multiplier ----
+# optionally prevent any movement, either via markets or across ward borders
+# set to 0 to prevent all movement, set to 1 for usual simulation behaviour
+movt.multiplier <- 1
+
+# how many subnodes to split the wards into, to simulate heterogeneity within wards ----
+# subnodes form a square grid 
+n.subnodes <- 8^2 # 1 means don't split # 3^2 means 3x3 grid, etc
+
+# strength of coupling between subnodes (used if n.subnodes > 1) ----
+coupling <- 0.02   
+#coupling <- 0.0001
+
+# SEIR model parameters ----
+inf.pars <- 
+  list(recovery  = 0.2 # host recovery
+       ,muH  = 0.005479452 #gives a steady infection but 100% sero+ when not differentiating birth and death rate
+       ,muBirth = 0.000456621#0.001369863
+       ,mu = 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
+       ,p_hv = 0.25 # unknwown
+       ,p_vh = 0.04 # unknown
+       ,laying = 20000 # rafts of 300 eggs
+       ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
+       ,development = 0.1  # eggs take 10 days to develop into adults
+       ,K = 110000
+       ,Kh = 1200
+       ,biteRate = 0.68
+       ,firstBiteDelay = 0.14
+       ,pupsMort = 0.2
+       ,cov = 0.7
+       ,i0 = 0
+  )
+# exclude seed ward from intervention ----
+exclude.seed <- FALSE   
+
+# reporting threshold ----
+rep.thresh <- 0.005
+
+# number of animals moving between contiguous wards ----
+contig.move.n <- 
+  0.25/n.subnodes * coupling * mean(wards[, paste0("pop.", sp)]) * n.days/12 * inf.pars$recovery * movt.multiplier
+
+# allow mosquito reproduction to vary with NDVI ----
+# in the previous iteration, paul used 1-ndvi but for mosquito this doesn't make sense 
+# higher NDVI relates to lush green which is where more mosquitos would be found
+# as opposed to closer to zero which is bare earth - no vegetation, no water = no mosqitos? 
+
+ # if(inf.pars$var.beta > 0) {
+ #   wards$betaV <- inf.pars$betaV * (1 - wards[ward.names, "ndvi"]) / mean(1 - wards[ward.names, "ndvi"])
+ # } else wards$betaV <- inf.pars$betaV
+
+ # if(inf.pars$var.beta > 0) {
+ #   wards$betaV <- inf.pars$betaV * (1 - wards[ward.names, "ndvi"]) / mean(1 - wards[ward.names, "ndvi"])
+ # } else wards$betaV <- inf.pars$betaV
+
+# how many vaccines are available? Inf means unlimited ----
+n.vax.dose <- c(Inf, round(sum(wards[, paste0("pop.", sp)]) / 10))[2]
+
+# how many replicates of each scenario to run? ----
+nrep <- nrow(not.mkts.rvf.risk.tab) * 1
+
+# initial node states ----
+# these inital states are common to all simulations (outside the loop)
+n <- length(ward.names)
+
+u0.outer <- 
+  data.frame(
+    Sh = rep(0, n)
+    ,Ih = rep(0, n)
+    ,Rh = rep(0, n) 
+    ,Dh = rep(0, n) 
+    #,Ic = rep(0, n) 
+    ,Pm = rep(20000, n) 
+    ,Jm = rep(1000000, n) 
+    ,Sm = rep(1000000, n)
+    ,Em = rep(0, n) 
+    ,Im = rep(0, n)
+    )
+
+rownames(u0.outer) <- ward.names
+
+# add susceptible animals ----
+u0.outer$Sh[!is.mkt] <- wards[ward.names[!is.mkt], paste0("pop.", sp)]
+
+# add cumulative count of infecteds and vax column ----
+u0.outer$Ic <- u0.outer$Ih
+
+# inspect u0.outer
+head(u0.outer)
+dim(u0.outer)
+
