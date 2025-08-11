@@ -38,7 +38,7 @@ start.date <- as.Date("2015-01-01")
 
 # runs through which months?
 # this is only running for a year so no concern of leap years 
-n.years <-  10
+n.years <-  1
 n.months <- n.years*12
 end.date <- start.date %m+% months(n.months)
 obvs.date <- start.date+1 #end.date-years(5) 

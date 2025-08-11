@@ -70,8 +70,8 @@ split.nodes.sir<-
       # Hosts ####
         #### Infection processes ####
         sh.trans <-
-          #paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
-          paste0("Sh", sn, " -> ", Nh, " > 0 ? biteRate*p_vh*Im",sn, "*(Sh", sn , "/", Nh, ") : 0 -> Ih", sn, " + Ic")
+          #paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/", Nh, ") : 0 -> Ih", sn, " + Ic")
+          paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
         
         ih.trans <-
           paste0("Ih", sn, " -> recovery*Ih", sn, " -> Rh", sn)
@@ -92,20 +92,22 @@ split.nodes.sir<-
         
         #### Host Births ####
         hbirths <-
-          paste0("@ -> muBirth*(Sh", sn,"+Rh",sn,")*(1-(Sh", sn, "+Ih", sn, "+Rh",sn, ")/Kh) -> Sh", sn)
+          paste0("@ -> muBirth*(Sh", sn,"+Rh",sn,")*(1-", Nh, "/Kh) -> Sh", sn)
         
       # Mosquitos ####
-        #### Infection processes ####
+        
         pups.trans <- 
           paste0("Pm", sn, " -> development*Pm", sn, "-> Jm", sn)  
         
         junior.trans <- 
           paste0("Jm", sn, "-> firstBiteDelay*Jm", sn, "-> Sm", sn)
         
+        #### Infection processes ####
         sm.trans <- 
           #paste0("Sm", sn, " ->", Nm, "> 0 ? p_hv*biteRate*(Ih", sn, env.contamIh, ")/(", Nh, env.contamSh, env.contamIh, env.contamRh , ")*Sm", sn, ": 0 -> Em", sn)
+          paste0("Sm", sn, " ->", Nm, "> 0 ? Sm", sn, "*p_hv*biteRate*((Ih", sn, env.contamIh, ")/", Nh,"): 0 -> Em", sn)
           #paste0("Sm", sn, " -> Sm", sn, "> 0 ? p_hv*biteRate*(Ih", sn, env.contamIh, ")/(", Nh, env.contamSh, env.contamIh, env.contamRh , ")*Sm", sn, ": 0 -> Em", sn)
-          paste0("Sm", sn, " -> ", Nm, " > 0 ? p_hv*biteRate*(Ih", sn, "/", Nh, ")*Sm", sn, ": 0 -> Em", sn) # add adj infected hosts?
+          #paste0("Sm", sn, " -> ", Nm, " > 0 ? p_hv*biteRate*(Ih", sn, "/", Nh, ")*Sm", sn, ": 0 -> Em", sn) # add adj infected hosts?
         
         em.trans <- 
           paste0("Em", sn, " -> extrinInc*Em", sn, "-> Im", sn)
@@ -137,7 +139,7 @@ split.nodes.sir<-
         
         c(sh.trans, ih.trans,  
           hbirths, sh.trans.D, ih.trans.D, rh.trans.D,
-          pups.trans, junior.trans, sm.trans, em.trans, 
+          mbirths, pups.trans, junior.trans, sm.trans, em.trans, 
           pups.trans.D, jm.trans.D, sm.trans.D, em.trans.D, im.trans.D
           )
       })
