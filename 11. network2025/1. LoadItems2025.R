@@ -4,7 +4,7 @@
 
 if(!require(SimInf)){
   install.packages("SimInf")
-  library(SimInf)
+  library(SimInf) <- 
 }
 
 
