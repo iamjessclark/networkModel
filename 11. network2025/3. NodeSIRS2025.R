@@ -71,7 +71,7 @@ split.nodes.sir<-
         #### Infection processes ####
         sh.trans <-
           #paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/", Nh, ") : 0 -> Ih", sn, " + Ic")
-          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? biteRate*p_vh*Im", sn, "*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
+          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? biteRate*p_vh*Im", sn, "*Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ") : 0 -> Ih", sn, " + Ic")
         
         ih.trans <-
           #paste0("Ih", sn, " -> recovery*Ih", sn, " -> Rh", sn)
