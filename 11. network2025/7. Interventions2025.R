@@ -94,20 +94,20 @@ intervention.vax <-
               ,mban = "none"
               ,n.vax = n.ward["few"]
               ,n.mban = 1
-              ,recovery  = 0.2 # host recovery
-              ,muH  = 0.000456621 #0.005479452 gives a steady infection but 100% sero+ when not differentiating birth and death rate
-              ,muBirth = 0.001369863
-              ,mu = 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
-              ,p_hv = 0.25 # unknwown
-              ,p_vh = 0.04 # unknown
-              ,laying = 20000 # rafts of 300 eggs
-              ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
-              ,development = 0.1  # eggs take 10 days to develop into adults
-              ,K = 1000000#110000
-              ,Kh = 150000#1200
-              ,biteRate = 0.68
-              ,firstBiteDelay = 0.14
-              ,pupsMort = 0.8
+              ,recovery  = inf.pars$recovery #0.2 # host recovery
+              ,muH  = inf.pars$muH #0.000456621 #0.005479452 gives a steady infection but 100% sero+ when not differentiating birth and death rate
+              ,muBirth = inf.pars$muBirth # 0.001369863
+              ,mu = inf.pars$mu # 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
+              ,p_hv = inf.pars$p_hv #0.25 # unknwown
+              ,p_vh = inf.pars$p_vh #0.04 # unknown
+              ,laying =inf.pars$laying #20000 # rafts of 300 eggs
+              ,extrinInc = inf.pars$extrinInc #0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
+              ,development = inf.pars$development #0.1  # eggs take 10 days to develop into adults
+              ,K = inf.pars$K #1000000#110000
+              ,Kh = inf.pars$Kh #150000#1200
+              ,biteRate = inf.pars$biteRate #0.68
+              ,firstBiteDelay = inf.pars$firstBiteDelay #0.14
+              ,pupsMort = inf.pars$pupsMort #0.8
               ,rep = 1:nrep
               ,stringsAsFactors = FALSE)
 
@@ -116,20 +116,20 @@ intervention.mban <-
               ,mban = mban.sets[[1]] 
               ,n.vax = 1
               ,n.mban = n.ward["few"]
-              ,recovery  = 0.2 # host recovery
-              ,muH  = 0.000456621 #0.005479452 gives a steady infection but 100% sero+ when not differentiating birth and death rate
-              ,muBirth = 0.001369863
-              ,mu = 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
-              ,p_hv = 0.25 # unknwown
-              ,p_vh = 0.04 # unknown
-              ,laying = 20000 # rafts of 300 eggs
-              ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
-              ,development = 0.1  # eggs take 10 days to develop into adults
-              ,K = 110000
-              ,Kh = 1200
-              ,biteRate = 0.68
-              ,firstBiteDelay = 0.14
-              ,pupsMort = 0.8
+              ,recovery  = inf.pars$recovery #0.2 # host recovery
+              ,muH  = inf.pars$muH #0.000456621 #0.005479452 gives a steady infection but 100% sero+ when not differentiating birth and death rate
+              ,muBirth = inf.pars$muBirth # 0.001369863
+              ,mu = inf.pars$mu # 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
+              ,p_hv = inf.pars$p_hv #0.25 # unknwown
+              ,p_vh = inf.pars$p_vh #0.04 # unknown
+              ,laying =inf.pars$laying #20000 # rafts of 300 eggs
+              ,extrinInc = inf.pars$extrinInc #0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
+              ,development = inf.pars$development #0.1  # eggs take 10 days to develop into adults
+              ,K = inf.pars$K #1000000#110000
+              ,Kh = inf.pars$Kh #150000#1200
+              ,biteRate = inf.pars$biteRate #0.68
+              ,firstBiteDelay = inf.pars$firstBiteDelay #0.14
+              ,pupsMort = inf.pars$pupsMort #0.8
               ,rep = 1:nrep
               ,stringsAsFactors = FALSE)
 

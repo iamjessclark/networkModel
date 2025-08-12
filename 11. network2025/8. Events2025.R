@@ -290,9 +290,9 @@ input.list <- mclapply(intervention$k, function(k) {
   infAnimal <- 
     data.frame(event = "enter", 
                time = 1,
-               node = 1:n.ward[3],#which(wards$rvf.risk == max(wards$rvf.risk))[1], 
+               node = which(wards$rvf.risk == max(wards$rvf.risk))[1], 
                dest = 0, 
-               n = 200, 
+               n = 1, 
                proportion = 0, 
                select = 6, 
                shift = 0,

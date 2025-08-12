@@ -15,7 +15,7 @@ coupling <- 0.02
 # SEIR model parameters ----
 inf.pars <- 
   list(recovery  = 0.2 # host recovery
-       ,muH  = 0.005479452 #gives a steady infection but 100% sero+ when not differentiating birth and death rate
+       ,muH  = 0.000456621#0.005479452 #gives a steady infection but 100% sero+ when not differentiating birth and death rate
        ,muBirth = 0.000456621#0.001369863
        ,mu = 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
        ,p_hv = 0.25 # unknwown
@@ -24,7 +24,7 @@ inf.pars <-
        ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
        ,development = 0.1  # eggs take 10 days to develop into adults
        ,K = 110000
-       ,Kh = 1200
+       ,Kh = 500000
        ,biteRate = 0.68
        ,firstBiteDelay = 0.14
        ,pupsMort = 0.2

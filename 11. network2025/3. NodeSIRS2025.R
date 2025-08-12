@@ -71,7 +71,7 @@ split.nodes.sir<-
         #### Infection processes ####
         sh.trans <-
           #paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/", Nh, ") : 0 -> Ih", sn, " + Ic")
-          paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
+          paste0("Sh", sn, " -> ", Nh, " > 0 ? biteRate*p_vh*Im", sn, "*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
         
         ih.trans <-
           paste0("Ih", sn, " -> recovery*Ih", sn, " -> Rh", sn)
@@ -81,15 +81,15 @@ split.nodes.sir<-
         sh.trans.D <-
           paste0("Sh", sn, " -> muH*Sh", sn, " -> @") #Dh", sn)
           #paste0("Sh", sn, " -> ", Nh, " > 0 ? muH*Sh", sn, " : 0 -> @") #Dh", sn)
-        
+
         ih.trans.D <-
           paste0("Ih", sn, " -> muH*Ih", sn, " -> @") #Dh", sn)
-          #paste0("Ih", sn, " -> ", Nh, " > 0 ? muH*Ih", sn, " : 0 -> @") #Dh", sn) 
-        
+          #paste0("Ih", sn, " -> ", Nh, " > 0 ? muH*Ih", sn, " : 0 -> @") #Dh", sn)
+
         rh.trans.D <-
           paste0("Rh", sn, " -> muH*Rh", sn, " -> @") #Dh", sn)
           #paste0("Rh", sn, " -> ", Nh, " > 0 ? muH*Rh", sn, " : 0 -> @") #Dh", sn)
-        
+
         #### Host Births ####
         hbirths <-
           paste0("@ -> muBirth*(Sh", sn,"+Rh",sn,")*(1-", Nh, "/Kh) -> Sh", sn)
@@ -135,12 +135,24 @@ split.nodes.sir<-
         
         #### births ####
         mbirths <-
-           paste0("@ -> laying*biteRate*(1-(Sm",sn, "+Em",sn,"+Im",sn,")/K) -> Pm", sn)
+           paste0("@ -> laying*biteRate*(1-",Nm,"/K) -> Pm", sn)
         
-        c(sh.trans, ih.trans,  
-          hbirths, sh.trans.D, ih.trans.D, rh.trans.D,
-          mbirths, pups.trans, junior.trans, sm.trans, em.trans, 
-          pups.trans.D, jm.trans.D, sm.trans.D, em.trans.D, im.trans.D
+        c(sh.trans
+          , ih.trans
+          , hbirths
+          , sh.trans.D
+          , ih.trans.D
+          , rh.trans.D
+          , mbirths
+          , pups.trans
+          , junior.trans
+          , sm.trans
+          , em.trans
+          , pups.trans.D
+          , jm.trans.D
+          , sm.trans.D
+          , em.trans.D
+          , im.trans.D
           )
       })
     

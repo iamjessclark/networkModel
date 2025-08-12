@@ -78,12 +78,12 @@ print(start <- Sys.time())
     N.mat[substr(rownames(N.mat), 1, 2) == "Rh", ] <- 0
     
     # make host carrying capacity per node and set to the original starting values? 
-    ldata <- 
-      as.data.frame(as.matrix(
-         u0$Sh*5
-      ))
-    
-    colnames(ldata) <- "Kh"
+    # ldata <- 
+    #   as.data.frame(as.matrix(
+    #      u0$Sh*5
+    #   ))
+    # 
+    # colnames(ldata) <- "Kh"
       
     # set up model 
     model <- mparse(transitions = mod.input$transitions,
@@ -105,7 +105,6 @@ print(start <- Sys.time())
                         ,pupsMort = intervention$pupsMort[k]
                         ,coupling = coupling
                         )
-                    #,ldata = ldata
                     ,u0 = mod.input$u0
                     ,tspan = 1:n.days
                     ,events = input.list[[k]]
@@ -119,7 +118,7 @@ print(start <- Sys.time())
     result <- run(model)
     out <- trajectory(result)
     print(Sys.time())
-    save.image("modout2025.RData")
+    #save.image("modout2025.RData")
 
 #     
 # Sh <- 

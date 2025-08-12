@@ -141,9 +141,9 @@ N.mat[substr(rownames(N.mat), 1, 2) == "Rh", ] <- 0
 
 (start <- Sys.time())
 #### Run model ####
-x = 1
-networkSA2025 <- pbmcapply::pbmclapply(parmVals$run, function(x){
-#networkSA2025 <- mclapply(parmVals$run, function(x...){
+
+#networkSA2025 <- pbmcapply::pbmclapply(parmVals$run, function(x){
+networkSA2025 <- mclapply(parmVals$run, function(x){
   VBDmod <- mparse(transitions = mod.input$transitions,
                    , compartments = as.character(mod.input$compartments)
                    , gdata = c(
@@ -182,7 +182,7 @@ networkSA2025 <- pbmcapply::pbmclapply(parmVals$run, function(x){
 ) 
 (end <- Sys.time())
 start-end
-save.image("SAnetwork2025.RData")
+#save.image("SAnetwork2025.RData")
 
 
 #### # extract the total cumulative incidence across all wards (except markets) ####
