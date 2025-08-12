@@ -71,24 +71,24 @@ split.nodes.sir<-
         #### Infection processes ####
         sh.trans <-
           #paste0("Sh", sn, " -> ", Nh, " > 0 ? (biteRate*p_vh*Im",sn, ")*(Sh", sn , "/", Nh, ") : 0 -> Ih", sn, " + Ic")
-          paste0("Sh", sn, " -> ", Nh, " > 0 ? biteRate*p_vh*Im", sn, "*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
+          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? biteRate*p_vh*Im", sn, "*(Sh", sn , "/(", Nh , env.contamSh, env.contamIh, env.contamRh , ")) : 0 -> Ih", sn, " + Ic")
         
         ih.trans <-
-          paste0("Ih", sn, " -> recovery*Ih", sn, " -> Rh", sn)
-          #paste0("Ih", sn, " -> ", Nh, " > 0 ? recovery*Ih", sn, " : 0 -> Rh", sn)
+          #paste0("Ih", sn, " -> recovery*Ih", sn, " -> Rh", sn)
+          paste0("Ih", sn, " -> (Ih", sn, " > 0) ? recovery*Ih", sn, " : 0 -> Rh", sn)
         
         #### Deaths ####
         sh.trans.D <-
-          paste0("Sh", sn, " -> muH*Sh", sn, " -> @") #Dh", sn)
-          #paste0("Sh", sn, " -> ", Nh, " > 0 ? muH*Sh", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Sh", sn, " -> muH*Sh", sn, " -> @") #Dh", sn)
+          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? muH*Sh", sn, " : 0 -> @") #Dh", sn)
 
         ih.trans.D <-
-          paste0("Ih", sn, " -> muH*Ih", sn, " -> @") #Dh", sn)
-          #paste0("Ih", sn, " -> ", Nh, " > 0 ? muH*Ih", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Ih", sn, " -> muH*Ih", sn, " -> @") #Dh", sn)
+          paste0("Ih", sn, " ->  (Ih", sn, " > 0) ? muH*Ih", sn, " : 0 -> @") #Dh", sn)
 
         rh.trans.D <-
-          paste0("Rh", sn, " -> muH*Rh", sn, " -> @") #Dh", sn)
-          #paste0("Rh", sn, " -> ", Nh, " > 0 ? muH*Rh", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Rh", sn, " -> muH*Rh", sn, " -> @") #Dh", sn)
+          paste0("Rh", sn, " ->  (Rh", sn, " > 0) ? muH*Rh", sn, " : 0 -> @") #Dh", sn)
 
         #### Host Births ####
         hbirths <-
