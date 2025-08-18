@@ -9,8 +9,18 @@ split.nodes.sir<-
     stopifnot(sqrt(n.subnodes) == round(sqrt(n.subnodes)))
     
     # define compartments
-    compartments <- c("Sh", "Ih", "Rh", "Pm","Jm", "Sm","Em","Im", "Ic")
-    hostcompartments <- c("Sh", "Ih", "Rh")
+    compartments <- c("Sh"
+                      , "Ih"
+                      , "Rh"
+                      , "Dh"
+                      , "Pm"
+                      , "Jm"
+                      , "Sm"
+                      , "Em"
+                      , "Im"
+                      , "Ic"
+                      )
+    hostcompartments <- compartments[1:4]
     vectorcompartments <- c("Pm", "Jm", "Sm","Em","Im") 
     
     #here I have removed the if statement saying to remove "E" if seir = false
@@ -21,7 +31,9 @@ split.nodes.sir<-
     # 9 x I, 9 x R etc. 
     
     sub.comp <- 
-      paste0(rep(compartments[1:8], each = n.subnodes), rep(1:n.subnodes, length(compartments[1:8]))) # not including Ic or Dh
+      #paste0(rep(compartments[1:8], each = n.subnodes), rep(1:n.subnodes, length(compartments[1:8]))) 
+      paste0(rep(compartments[1:9], each = n.subnodes), rep(1:n.subnodes, length(compartments[1:9]))) 
+    
     # how many subcompartments are there
     n.sub.comp <- length(sub.comp)
     # create adjacency matrix, if none is supplied
@@ -65,7 +77,7 @@ split.nodes.sir<-
         env.contamRh <- 
           if(length(nbrs) > 0) paste0(" + ((", paste0("Rh", nbrs, collapse = "+"), ")*coupling)") else NULL
         
-        Nh <- paste0("(", paste0(hostcompartments, sn, collapse = "+"), ")")
+        Nh <- paste0("(", paste0(hostcompartments[1:3], sn, collapse = "+"), ")")
         Nm <- paste0("(", paste0(vectorcompartments[3:5], sn, collapse = "+"), ")")
       # Hosts ####
         #### Infection processes ####
@@ -80,20 +92,23 @@ split.nodes.sir<-
         #### Deaths ####
         sh.trans.D <-
           #paste0("Sh", sn, " -> muH*Sh", sn, " -> @") #Dh", sn)
-          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? muH*Sh", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Sh", sn, " -> (Sh", sn, " > 0) ? muH*Sh", sn, " : 0 -> @") #Dh", sn)
+          paste0("Sh", sn, " -> (Sh", sn, " > 0) ? muH*Sh", sn, " : 0 -> Dh", sn)
 
         ih.trans.D <-
           #paste0("Ih", sn, " -> muH*Ih", sn, " -> @") #Dh", sn)
-          paste0("Ih", sn, " ->  (Ih", sn, " > 0) ? muH*Ih", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Ih", sn, " ->  (Ih", sn, " > 0) ? muH*Ih", sn, " : 0 -> @") #Dh", sn)
+          paste0("Ih", sn, " ->  (Ih", sn, " > 0) ? muH*Ih", sn, " : 0 -> Dh", sn)
 
         rh.trans.D <-
           #paste0("Rh", sn, " -> muH*Rh", sn, " -> @") #Dh", sn)
-          paste0("Rh", sn, " ->  (Rh", sn, " > 0) ? muH*Rh", sn, " : 0 -> @") #Dh", sn)
+          #paste0("Rh", sn, " ->  (Rh", sn, " > 0) ? muH*Rh", sn, " : 0 -> @") #Dh", sn)
+          paste0("Rh", sn, " ->  (Rh", sn, " > 0) ? muH*Rh", sn, " : 0 -> Dh", sn)
 
         #### Host Births ####
         hbirths <-
           paste0("@ -> muBirth*(Sh", sn,"+Rh",sn,")*(1-", Nh, "/Kh) -> Sh", sn)
-        
+          
       # Mosquitos ####
         
         pups.trans <- 
@@ -105,7 +120,8 @@ split.nodes.sir<-
         #### Infection processes ####
         sm.trans <- 
           #paste0("Sm", sn, " ->", Nm, "> 0 ? p_hv*biteRate*(Ih", sn, env.contamIh, ")/(", Nh, env.contamSh, env.contamIh, env.contamRh , ")*Sm", sn, ": 0 -> Em", sn)
-          paste0("Sm", sn, " ->", Nm, "> 0 ? Sm", sn, "*p_hv*biteRate*((Ih", sn, env.contamIh, ")/", Nh,"): 0 -> Em", sn)
+          #paste0("Sm", sn, " ->", Nm, "> 0 ? Sm", sn, "*p_hv*biteRate*((Ih", sn, env.contamIh, ")/", Nh,"): 0 -> Em", sn)
+          paste0("Sm", sn, " -> (", Nh, "> 0) ? Sm", sn, "*p_hv*biteRate*(Ih", sn, env.contamIh, ")/", Nh,": 0 -> Em", sn)
           #paste0("Sm", sn, " -> Sm", sn, "> 0 ? p_hv*biteRate*(Ih", sn, env.contamIh, ")/(", Nh, env.contamSh, env.contamIh, env.contamRh , ")*Sm", sn, ": 0 -> Em", sn)
           #paste0("Sm", sn, " -> ", Nm, " > 0 ? p_hv*biteRate*(Ih", sn, "/", Nh, ")*Sm", sn, ": 0 -> Em", sn) # add adj infected hosts?
         
@@ -136,7 +152,7 @@ split.nodes.sir<-
         #### births ####
         mbirths <-
            paste0("@ -> laying*biteRate*(1-",Nm,"/K) -> Pm", sn)
-        
+          
         c(sh.trans
           , ih.trans
           , hbirths
@@ -160,6 +176,7 @@ split.nodes.sir<-
     # split the initial numbers in each compartment for each node across the subnodes.
     # numbers from each node are randomly (mulitnomially) allocated to subnodes
     u0.list.host <- 
+      #lapply(hostcompartments,
       lapply(hostcompartments, 
              function(cmp) {
                out <- t(sapply(1:nrow(u0), function(i) rmultinom(1, u0[i, cmp], rep(1, n.subnodes))))
@@ -183,6 +200,7 @@ split.nodes.sir<-
     stopifnot(all(names(u0.out) %in% sub.comp) & all(sub.comp %in% names(u0.out)))
     u0.out <- u0.out[, sub.comp]
     u0.out$Ic <- u0$Ic
+    
     # make the events table. this allows different types of event (e.g. movement, vaccination, etc)
     # to happen to different sets of animals. for example, movements might be taken from all subnodes 
     # and all compartments, while a movement across a border might just happen to edge subnodes.
