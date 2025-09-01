@@ -11,7 +11,7 @@ for(i in 1:length(good)){
 }
 
 # make df
-stochSAout2 <- do.call(rbind, stochSApu# Requirements ####
+stochSAout2 <- do.call(rbind, stochSA)# Requirements ####
 
 if(!require(SimInf)){
   install.packages("SimInf")
@@ -82,7 +82,7 @@ VBDmod1 <- mparse(transitions = transitions
 )
 
 result <- run(model = VBDmod1)
-(traj <- trajectory(result))ps2)
+(traj <- trajectory(result))
 
 # plot recovered and infected pop
 stochSAout2 %>%

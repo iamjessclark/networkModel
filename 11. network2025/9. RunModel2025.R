@@ -60,7 +60,7 @@ print(start <- Sys.time())
     u0$Ic <- 0
     u0 <- as.data.frame(lapply(u0,as.integer))
     rownames(u0) <- ward.names
-    #u0$Sh <- u0$Sh + 10
+    u0$Sh <- u0$Sh + 10
     
     # split nodes into subnodes 
     mod.input <- split.nodes.sir(n.subnodes = n.subnodes, u0 = u0)

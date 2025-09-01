@@ -24,7 +24,7 @@ inf.pars <-
        ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
        ,development = 0.1  # eggs take 10 days to develop into adults
        ,K = 110000
-       ,Kh = 500000
+       ,Kh = 10000
        ,biteRate = 0.3
        ,firstBiteDelay = 0.14
        ,pupsMort = 0.2
