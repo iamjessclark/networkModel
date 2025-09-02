@@ -201,4 +201,35 @@ VBDmodMovementSA <- mclapply(parmVals$run, function(x){
 (end <- Sys.time())
 start-end
 
-save.image()
+save.image("simplenetworkSA.RDdata")
+
+testList <- list()
+for(i in 1:length(VBDmodMovementSA)){
+  VBDmodMovementSA[[i]]$run <- i
+  
+  testList[[i]] <- 
+    VBDmodMovementSA[[i]] %>%
+    mutate(propIh = Ih/(Sh+Ih+Rh), 
+           propRh = Rh/(Sh+Ih+Rh), 
+           VtH = (Sm+Em+Im)/(Sh+Ih+Rh)) %>%
+    group_by(time) %>%
+    summarise(meanIh = mean(propIh), 
+              meanRh = mean(propRh), 
+              meanVtH = mean(VtH)) %>%
+    filter(time == max(time))
+}
+
+tempdf <- 
+  do.call(rbind,testList)
+tempdf$run <- 1:nrow(tempdf)
+tempdf %>%
+  filter(meanIh > 0)
+
+
+  
+  
+  
+  
+  
+  
+  
