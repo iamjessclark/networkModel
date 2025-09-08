@@ -223,13 +223,51 @@ tempdf <-
   do.call(rbind,testList)
 tempdf$run <- 1:nrow(tempdf)
 tempdf %>%
-  filter(meanIh > 0)
+  filter(meanIh > 0) %>%
+  ggplot()+
+  geom_point(aes(x = meanIh, y = meanRh))
 
 
+tempdf %>% 
+  filter(meanRh > 0.1 & meanRh < 0.2)
+  
+params[211,]
   
   
-  
-  
-  
-  
+# model
+VBDmodMovementUpdatePars <- mparse(
+                   transitions = transitions
+                 , compartments = compartments
+                 , gdata = c(
+                      recovery  = 0.2
+                     , muH  = 0.000456621
+                     , muBirth = 0.001369863
+                     , mu   = 0.0335559
+                     , p_hv = 0.5232667
+                     , p_vh = 0.835714
+                     , laying = 20000
+                     , extrinInc = 0.09306911
+                     , K = 80000000
+                     , Kh = 100000
+                     , development = 0.1
+                     , biteRate = 0.6653274
+                     , firstBiteDelay = 0.2792724
+                     , pupsMort = 0.4357441
+                 )
+                 , u0 = u0
+                 , tspan = seq(1, maxTime)
+                 , events = events
+                 , E = Ev
+)
+
+start <- Sys.time()
+resultMovementUpdatePars <- run(model = VBDmodMovementUpdatePars)
+(trajMovementUpdatePars <- trajectory(resultMovementUpdatePars))
+end <- Sys.time()
+(start-end)
+save.image("VBDmodMovementUpdatePars.RData")
+
+trajMovementUpdatePars %>%
+  ggplot() + 
+  geom_line(aes(x = time, y = Ih, group = node, colour = node))
   
