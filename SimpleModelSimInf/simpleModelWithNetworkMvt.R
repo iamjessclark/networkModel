@@ -1,11 +1,11 @@
 # Requirements ####
+source("1.LoadItems2025.R")
 
 if(!require(SimInf)){
   install.packages("SimInf")
   library(SimInf)
 }
 
-#,"Sh -> biteRate*p_vh*Im*Sh/(Sh+Ih+Rh) -> Ih+Ic"
 
 compartments <- c("Sh", "Ih", "Rh", "Pm", "Jm", "Sm","Em","Im", "Ic")
 transitions <- c("@ -> muBirth*(Sh+Rh)*(1-(Sh+Ih+Rh)/Kh) -> Sh"
