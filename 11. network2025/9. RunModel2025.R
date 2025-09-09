@@ -31,8 +31,8 @@ print(start <- Sys.time())
     u0 <- u0.outer
     u0[seed.ward, "Ih"] <- u0[seed.ward, "Ic"] <- inf.pars$i0
     u0$Sh <- u0$Sh - u0$Ih
- 
-    # get vaccination plan for scenario k 
+
+    # get vaccination plan for scenario k
     vax.df <- vax.list[[intervention$vax[k]]]
     vax.per.ward <- 0
     if(all(vax.df$day == 0) & !(intervention$vax[k] %in% c("none"))) {
@@ -53,7 +53,7 @@ print(start <- Sys.time())
     if(is.na(vax.used)) vax.used <- 0
     print(intervention$vax[k])
     print(paste(n.ward.vax, "wards vaccinated.", vax.used, "doses used."))
-    
+
     ## set up SEIR model ##
     
     # make sure starting values for states are integers 
@@ -77,15 +77,6 @@ print(start <- Sys.time())
     N.mat[substr(rownames(N.mat), 1, 2) == "Ih", ] <- 0
     # recovereds shouldn't move, as they're already effectively vaxed
     N.mat[substr(rownames(N.mat), 1, 2) == "Rh", ] <- 0
-    
-    # make host carrying capacity per node and set to the original starting values? 
-     ldata <- 
-       data.frame(
-          muH = rep(intervention$muH[k], n.ward[3])
-          ,muBirth = rep(intervention$muBirth[k], n.ward[3])
-       )
-
-    ldata[c(which(u0$Sh==0)),c(1,2)] <- 0
     
     # set up model 
     model <- mparse(transitions = mod.input$transitions,

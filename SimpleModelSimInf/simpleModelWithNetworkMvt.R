@@ -203,6 +203,7 @@ start-end
 
 save.image("simplenetworkSA.RDdata")
 
+load("simplenetworkSA.RDdata")
 testList <- list()
 for(i in 1:length(VBDmodMovementSA)){
   VBDmodMovementSA[[i]]$run <- i
@@ -231,9 +232,9 @@ tempdf %>%
 tempdf %>% 
   filter(meanRh > 0.1 & meanRh < 0.2)
   
-params[211,]
+parmVals[995,]
   
-  
+maxTime = 365*10  
 # model
 VBDmodMovementUpdatePars <- mparse(
                    transitions = transitions
@@ -242,17 +243,17 @@ VBDmodMovementUpdatePars <- mparse(
                       recovery  = 0.2
                      , muH  = 0.000456621
                      , muBirth = 0.001369863
-                     , mu   = 0.0335559
-                     , p_hv = 0.5232667
-                     , p_vh = 0.835714
+                     , mu   = 0.03743286
+                     , p_hv = 0.7082972
+                     , p_vh = 0.2618384
                      , laying = 20000
-                     , extrinInc = 0.09306911
+                     , extrinInc = 0.08136993
                      , K = 80000000
                      , Kh = 100000
                      , development = 0.1
-                     , biteRate = 0.6653274
-                     , firstBiteDelay = 0.2792724
-                     , pupsMort = 0.4357441
+                     , biteRate = 0.515714
+                     , firstBiteDelay = 0.3840011
+                     , pupsMort = 0.2079803
                  )
                  , u0 = u0
                  , tspan = seq(1, maxTime)
@@ -265,9 +266,12 @@ resultMovementUpdatePars <- run(model = VBDmodMovementUpdatePars)
 (trajMovementUpdatePars <- trajectory(resultMovementUpdatePars))
 end <- Sys.time()
 (start-end)
-save.image("VBDmodMovementUpdatePars.RData")
+save.image("VBDmodMovementUpdatePars855.RData")
 
 trajMovementUpdatePars %>%
+  mutate(propIh = Ih/(Sh+Ih+Rh), 
+         propRh = Rh/(Sh+Ih+Rh), 
+         VtH = (Sm+Em+Im)/(Sh+Ih+Rh)) %>%
   ggplot() + 
-  geom_line(aes(x = time, y = Ih, group = node, colour = node))
-  
+  #geom_line(aes(x = time, y = propIh, group = node, colour = node)) +
+  geom_line(aes(x = time, y = propRh, group = node, colour = node))

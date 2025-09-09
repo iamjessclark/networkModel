@@ -6,7 +6,7 @@ movt.multiplier <- 1
 
 # how many subnodes to split the wards into, to simulate heterogeneity within wards ----
 # subnodes form a square grid 
-n.subnodes <- 8^2 # 1 means don't split # 3^2 means 3x3 grid, etc
+n.subnodes <- 1^2 # 1 means don't split # 3^2 means 3x3 grid, etc
 
 # strength of coupling between subnodes (used if n.subnodes > 1) ----
 coupling <- 0.02   
@@ -14,20 +14,20 @@ coupling <- 0.02
 
 # SEIR model parameters ----
 inf.pars <- 
-  list(recovery  = 0.2 # host recovery
-       ,muH  = 0.000456621 
-       ,muBirth = 0.000456621  #0.001369863
-       ,mu = 0.03058104 # https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-023-05792-3#:~:text=The%20average%20adult%20lifespan%20for,Culex%20species%20(Table%202)
-       ,p_hv = 0.25 # unknwown
-       ,p_vh = 0.04 # unknown
-       ,laying = 300 # rafts of 300 eggs
-       ,extrinInc = 0.1094668 # unknown extrinsic incubation - some sources say as little as 1 day in high temps
-       ,development = 0.1  # eggs take 10 days to develop into adults
-       ,K = 110000
-       ,Kh = 10000
-       ,biteRate = 0.3
-       ,firstBiteDelay = 0.14
-       ,pupsMort = 0.2
+  list( recovery  = 0.2
+        , muH  = 0.000456621
+        , muBirth = 0.001369863
+        , mu   = 0.03743286
+        , p_hv = 0.7082972
+        , p_vh = 0.2618384
+        , laying = 20000
+        , extrinInc = 0.08136993
+        , K = 80000000
+        , Kh = 100000
+        , development = 0.1
+        , biteRate = 0.515714
+        , firstBiteDelay = 0.3840011
+        , pupsMort = 0.2079803
        ,cov = 0.7
        ,i0 = 0
   )
@@ -69,13 +69,12 @@ u0.outer <-
     Sh = rep(0, n)
     ,Ih = rep(0, n)
     ,Rh = rep(0, n) 
-    ,Dh = rep(0, n) 
-    ,Ic = rep(0, n) 
     ,Pm = rep(20000, n) 
     ,Jm = rep(1000, n) 
     ,Sm = rep(1000, n)
     ,Em = rep(0, n) 
     ,Im = rep(0, n)
+    ,Ic = rep(0, n) 
     )
 
 rownames(u0.outer) <- ward.names

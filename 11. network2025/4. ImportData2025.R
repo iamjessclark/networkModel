@@ -45,10 +45,9 @@ obvs.date <- start.date+1 #end.date-years(5)
 n.days <- -(as.numeric(difftime(start.date, end.date, units = "days")))
 obvs.days <- n.days-as.numeric(difftime(end.date, obvs.date, units = "days"))# this has a negative on it as it is a negative number that comes out of diff time
 all.months <- formatC(1:n.months, width = 2, flag = "0")
-dieT <- which(day(seq(start.date, end.date, by = "days"))==31 & month(seq(start.date, end.date, by = "days"))==12) 
-bornT <- which(day(seq(start.date, end.date, by = "days"))==1 & month(seq(start.date, end.date, by = "days"))==1) 
+
 # which day of the year (1:365) is the first of each month?
-# this is clever
+
 all.months.day1 <-
   sapply(all.months, function(mm) {
     print(mm)

@@ -294,7 +294,7 @@ input.list <- mclapply(intervention$k, function(k) {
                dest = 0, 
                n = 1, 
                proportion = 0, 
-               select = 6, 
+               select = 3, 
                shift = 0,
                month = NA, 
                stringsAsFactors = FALSE)
