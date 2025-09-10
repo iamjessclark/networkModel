@@ -6,7 +6,7 @@ movt.multiplier <- 1
 
 # how many subnodes to split the wards into, to simulate heterogeneity within wards ----
 # subnodes form a square grid 
-n.subnodes <- 1^2 # 1 means don't split # 3^2 means 3x3 grid, etc
+n.subnodes <- 2^2 # 1 means don't split # 3^2 means 3x3 grid, etc
 
 # strength of coupling between subnodes (used if n.subnodes > 1) ----
 coupling <- 0.02   

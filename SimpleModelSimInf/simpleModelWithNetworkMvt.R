@@ -1,5 +1,5 @@
 # Requirements ####
-source("1.LoadItems2025.R")
+source("1. LoadItems2025.R")
 
 if(!require(SimInf)){
   install.packages("SimInf")
@@ -234,7 +234,7 @@ tempdf %>%
   
 parmVals[995,]
   
-maxTime = 365*10  
+maxTime = 365*1 
 # model
 VBDmodMovementUpdatePars <- mparse(
                    transitions = transitions
@@ -261,7 +261,7 @@ VBDmodMovementUpdatePars <- mparse(
                  , E = Ev
 )
 
-start <- Sys.time()
+(start <- Sys.time())
 resultMovementUpdatePars <- run(model = VBDmodMovementUpdatePars)
 (trajMovementUpdatePars <- trajectory(resultMovementUpdatePars))
 end <- Sys.time()

@@ -63,7 +63,7 @@ source("4. ImportData2025.R")
 # movement parameters for the simulation of the hurdle - look at measures of ward-level network connectedness
 source("5. MovementPars2025.R")
 
-# load the parameter sets for the model 
+# load the parameter sets for the model - got to make sure that n.subnodes is 2^2 at most
 source("6. GlobalSettings2025.R")
 
 # load interventions 
@@ -71,7 +71,6 @@ source("7. Interventions2025.R")
 
 # load events 
 source("8. Events2025.R")
-
 
 u0 <- u0.outer
 u0$Sh <- u0$Sh+10
@@ -94,11 +93,11 @@ N.mat[substr(rownames(N.mat), 1, 2) == "Ih", ] <- 0
 # recovereds shouldn't move, as they're already effectively vaxed
 N.mat[substr(rownames(N.mat), 1, 2) == "Rh", ] <- 0
 
-# events #
+# events ####
 
 events <- input.list[[1]]
 
-
+# run model ####
 networkSimpMod <- mparse(
   transitions = mod.input$transitions
   , compartments = mod.input$compartments
@@ -127,9 +126,15 @@ networkSimpMod <- mparse(
 )
 
 
-start <- Sys.time()
+(start <- Sys.time())
 resultNetworkSimpMod <- run(model = networkSimpMod)
 (trajresultNetworkSimpMod <- trajectory(resultNetworkSimpMod))
 end <- Sys.time()
 (start-end)
-save.image("networkModSimpMod.RData")
+#save.image("networkModSimpMod.RData")
+
+trajresultNetworkSimpMod %>%
+  mutate(propIh = (Ih1+Ih2+Ih3+Ih4)/(Sh1 + Sh2 +  Sh3 +  Sh4 + Ih1+Ih2+Ih3+Ih4 + Rh1+ Rh2+ Rh3+ Rh4), 
+         propRh = (Rh1+ Rh2+ Rh3+ Rh4)/(Sh1 + Sh2 +  Sh3 +  Sh4 + Ih1+Ih2+Ih3+Ih4 + Rh1+ Rh2+ Rh3+ Rh4)) %>%
+  ggplot()+
+  geom_line(aes(x = time, y = propIh, group = node))
